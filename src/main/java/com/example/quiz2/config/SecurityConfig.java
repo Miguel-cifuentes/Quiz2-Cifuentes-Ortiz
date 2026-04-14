@@ -40,16 +40,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔓 públicos
                         .requestMatchers("/auth/**").permitAll()
 
-                        // 👑 ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        // 👨‍🍳 CHEF
                         .requestMatchers("/chef/**").hasRole("CHEF")
 
-                        // 🔒 resto
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
@@ -64,7 +60,6 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
 
-        // 🔥 SOLUCIÓN AL ERROR: usar constructor
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider(userDetailsService);
 

@@ -1,7 +1,7 @@
 package com.example.quiz2.security;
 
 import com.example.quiz2.repository.UserRepository;
-import com.example.quiz2.entity.User;
+import com.example.quiz2.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
