@@ -1,10 +1,28 @@
 package com.example.quiz2.config;
 
+import com.example.quiz2.config.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,16 +40,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
-                        //  públicos
+                        // 🔓 públicos
                         .requestMatchers("/auth/**").permitAll()
 
-                        //  ADMIN
+                        // 👑 ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        //  CHEF
+                        // 👨‍🍳 CHEF
                         .requestMatchers("/chef/**").hasRole("CHEF")
 
-                        //  resto
+                        // 🔒 resto
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
@@ -45,9 +63,13 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
+
+        // 🔥 SOLUCIÓN AL ERROR: usar constructor
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider(userDetailsService);
+
         provider.setPasswordEncoder(passwordEncoder());
+
         return provider;
     }
 
