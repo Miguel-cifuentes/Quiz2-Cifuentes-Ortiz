@@ -1,8 +1,15 @@
 package com.example.quiz2.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Table(name = "chefs")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Chef {
 
     @Id
@@ -20,5 +27,4 @@ public class Chef {
     @OneToOne(mappedBy = "chef")
     private Kitchen kitchen;
 
-    // getters y setters
 }
